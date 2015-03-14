@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <Arduino.h>
+
 #include "Servo.h"
 #include "arduino_private.h"
 
@@ -16,13 +18,14 @@ static uint8_t attach(struct Servo *servo, int pin)
 	if (servo == NULL)
 		return 0;
 
+	pinMode(pin, OUTPUT);
 	servo->pin = pin;
 	init_servo(pin);
 
 	return 0; /* TODO should return channel number, what is it ? */
 }
 
-static void write(struct Servo *servo, int value)
+static void servo_write(struct Servo *servo, int value)
 {
 	if (servo == NULL)
 		return;
@@ -34,10 +37,10 @@ Servo servo(struct Servo *servo)
 {
 	if (servo == NULL)
 		return (struct Servo){.self = NULL, .pin = -1, .value = -1,
-				.attach = attach,.write = write,};
+				.attach = attach,.write = servo_write,};
 
 	*servo = (struct Servo) {.self = servo, .pin = -1, .value = -1,
-		.attach = attach, .write = write,};
+		.attach = attach, .write = servo_write,};
 
 	return *servo;
 }
