@@ -644,7 +644,7 @@ static void init_mapping(enum mapping_name n, int fd)
 			MAP_SHARED, fd, mapping_absolute_start);
 	if (map[n].base == MAP_FAILED)
 		error(EXIT_FAILURE, errno, "mmap");
-	map[n].start = (void *)((int)map[n].base +
+	map[n].start = (void *)((intmax_t)map[n].base +
 			(map[n].base_offset & page_size_mask));
 }
 
